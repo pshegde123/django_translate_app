@@ -9,18 +9,28 @@
   <h1 class="header">Add New Card</h1>  
 </div>
   <div class="container">    
-      <form 
-        action="{% url 'create-conversion' %}"
-        method="post" 
-        class="subsection-content" 
-        autocomplete="off">
-        {% csrf_token %}                  
-        {{ cardform.as_p }}
-        <button type="submit" class="btn submit">Submit</button>
-    </form>
-        <textarea id="translated_text" rows="10" cols="40" placeholder="Translated text..">
-          {{translated.text}}
-        </textarea>        
+    <section id="input-section">
+        <form 
+          action="{% url 'create-conversion' %}"
+          method="post" 
+          class="subsection-content" 
+          autocomplete="off">
+          {% csrf_token %}                  
+          {{ cardform.as_p }}
+          <button type="submit" class="btn submit">Submit</button>
+      </form>
+    </section>
+    <section id="result-section">
+      <form  
+          action="{% url 'save-translation' %}"
+          method="post" 
+          class="subsection-content" 
+          autocomplete="off">
+          {% csrf_token %}          
+          {{resultform.as_p}}                
+        <button type="submit" class="btn submit">Save Card</button>
+      </form>
+    </section>
   </div>
 
 

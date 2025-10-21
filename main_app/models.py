@@ -129,9 +129,9 @@ class Card(models.Model):
         return self.title
 
 class ResultCard(models.Model):
-    title = models.CharField(max_length=100)      
+    title = models.TextField(max_length=100,default="ES->EN")      
     result = models.TextField(max_length=250)
-    
+    note = models.CharField(max_length=250, default="")
     
     def __str__(self):
         return self.title
