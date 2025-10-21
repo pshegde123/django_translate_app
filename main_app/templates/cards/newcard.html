@@ -5,15 +5,23 @@
 />
 {% endblock %} {% block content %}
 
-<div class="container">
+<div class="page-header">
   <h1 class="header">Add New Card</h1>  
-  <section>
-    <select id="languages">
-      {% for short_lang, full_lang in zipped_data %}
-      <option id={{short_lang}} value="{{short_lang}}">{{full_lang}}</option>
-      {% endfor %}
-    </select>
-  </section>
 </div>
+  <div class="container">
+    <form action="{% url 'create_translation' %}" method="post" class="form-container">
+      {% csrf_token %}    
+      <select id="languages">
+        <option id="auto_detect" value="auto_detect">Auto Detect</option>
+        {% for short_lang, full_lang in zipped_data %}
+        <option id={{short_lang}} value="{{short_lang}}">{{full_lang}}</option>
+        {% endfor %}
+      </select>   
+        <textarea id="user_input" rows="10" cols="40" placeholder="Enter text here.."></textarea>
+        <button type="submit" class="btn submit">Submit</button>
+    </form>    
+        <textarea id="translated_text" rows="10" cols="40" placeholder="Translated text.."></textarea>        
+  </div>
+
 
 {% endblock %}

@@ -34,3 +34,9 @@ async def add_new_card(request):
     zipped_data = zip(short_lang, full_lang)
 
     return  render(request, 'cards/newcard.html',{'translated':translated, 'zipped_data':zipped_data})
+
+async def translate_text(request):
+    translator = Translator()
+    translated = await translator.translate(text= "Buen día")   
+    print(translated)
+    return render(request,'about.html')

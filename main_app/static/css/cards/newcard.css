@@ -111,6 +111,12 @@ nav li {
     margin: 20px;
 }
 
+.container {
+    display: grid;
+    grid-template-columns: auto auto auto;
+    padding: 10px;
+}
+
 .btn {
     font-size: var(--font-l);
     padding: 8px 16px;
