@@ -4,6 +4,7 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from googletrans import Translator, LANGUAGES
 from .models import Card
+from .forms import CardForm
 
 def home(request):
     # Send a simple HTML response
@@ -24,6 +25,10 @@ def show_languages():
         print(language," " * (8 - len(language)),LANGUAGES[language])
 
 async def add_new_card(request):
+    #Access form
+    cardform = CardForm()    
+
+    #Test data
     translator = Translator()
     translated = await translator.translate(text= "Buen día")   
     short_lang = []
@@ -33,10 +38,18 @@ async def add_new_card(request):
         full_lang.append(LANGUAGES[language].capitalize())        
     zipped_data = zip(short_lang, full_lang)
 
-    return  render(request, 'cards/newcard.html',{'translated':translated, 'zipped_data':zipped_data})
+    #return  render(request, 'cards/newcard.html',{'translated':translated, 'zipped_data':zipped_data})
+    #return  render(request, 'cards/newcard.html',{"geekform":geekform,'zipped_data':zipped_data})
+    return  render(request, 'cards/newcard.html',{'cardform':cardform,'zipped_data':zipped_data})
+    
 
 async def translate_text(request):
-    translator = Translator()
-    translated = await translator.translate(text= "Buen día")   
-    print(translated)
+    # translator = Translator()
+    # translated = await translator.translate(text= "Buen día")   
+    # print(translated)
+    if(request.method == "POST"):
+        form = CardForm(request.POST)
+        if form.is_valid():
+            input_text = form.cleaned_data['textinput']
+            print(input_text)
     return render(request,'about.html')
