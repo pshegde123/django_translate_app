@@ -26,7 +26,7 @@ def show_languages():
 async def add_new_card(request):
     #Access form
     cardform = CardForm()    
-
+    result_form = ResultCardForm()
     #Test data  
     # short_lang = []
     # full_lang = []
@@ -35,7 +35,7 @@ async def add_new_card(request):
     #     full_lang.append(LANGUAGES[language].capitalize())        
     # zipped_data = zip(short_lang, full_lang)
     #return  render(request, 'cards/newcard.html',{'translated':translated, 'zipped_data':zipped_data})    
-    return  render(request, 'cards/newcard.html',{'cardform':cardform})
+    return  render(request, 'cards/newcard.html',{'cardform':cardform, 'resultform':result_form})
     
 async def create_conversion(request):
     if(request.method == "POST"):
