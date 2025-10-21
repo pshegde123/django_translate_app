@@ -7,5 +7,5 @@ urlpatterns = [
     path('about/', views.about, name='about'),
     path('cards/', views.cards_index, name='cards'),
     path('cards/create/', views.add_new_card, name="card-create"),
-    path('create_translation/', views.translate_text, name="create_translation")
+    path('create-conversion/', views.create_conversion, name="create-conversion")  
 ]

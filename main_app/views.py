@@ -3,7 +3,7 @@ import asyncio
 from django.shortcuts import render
 from django.http import HttpResponse
 from googletrans import Translator, LANGUAGES
-from .models import Card
+from .models import Card, ResultCard
 from .forms import CardForm
 
 def home(request):
@@ -28,28 +28,24 @@ async def add_new_card(request):
     #Access form
     cardform = CardForm()    
 
-    #Test data
-    translator = Translator()
-    translated = await translator.translate(text= "Buen día")   
-    short_lang = []
-    full_lang = []
-    for language in LANGUAGES:
-        short_lang.append(language)
-        full_lang.append(LANGUAGES[language].capitalize())        
-    zipped_data = zip(short_lang, full_lang)
-
-    #return  render(request, 'cards/newcard.html',{'translated':translated, 'zipped_data':zipped_data})
-    #return  render(request, 'cards/newcard.html',{"geekform":geekform,'zipped_data':zipped_data})
-    return  render(request, 'cards/newcard.html',{'cardform':cardform,'zipped_data':zipped_data})
+    #Test data  
+    # short_lang = []
+    # full_lang = []
+    # for language in LANGUAGES:
+    #     short_lang.append(language)
+    #     full_lang.append(LANGUAGES[language].capitalize())        
+    # zipped_data = zip(short_lang, full_lang)
+    #return  render(request, 'cards/newcard.html',{'translated':translated, 'zipped_data':zipped_data})    
+    return  render(request, 'cards/newcard.html',{'cardform':cardform})
     
-
-async def translate_text(request):
-    # translator = Translator()
-    # translated = await translator.translate(text= "Buen día")   
-    # print(translated)
+async def create_conversion(request):
     if(request.method == "POST"):
         form = CardForm(request.POST)
         if form.is_valid():
-            input_text = form.cleaned_data['textinput']
-            print(input_text)
-    return render(request,'about.html')
+            textinput = form.cleaned_data['textinput']
+            input_language = form.cleaned_data['input_language']
+            output_language = form.cleaned_data['output_language']                                                
+            translator = Translator()
+            translated = await translator.translate(text= textinput)   
+
+    return render(request,'cards/newcard.html',{'cardform':form,'translated':translated})
