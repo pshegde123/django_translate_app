@@ -45,9 +45,9 @@ def about(request):
 @login_required
 def cards_index(request):
     # Render the cats/index.html template with the cats data
-    cardz = Card.objects.all()
+    cardz = ResultCard.objects.all()
     #print(cardz)    
-    return render(request, 'cards/index.html', {'cards': cardz})
+    return render(request, 'cards/index.html', {'resultcards': cardz})
 
 def show_languages():
     for language in LANGUAGES:

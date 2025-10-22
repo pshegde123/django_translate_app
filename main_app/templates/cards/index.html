@@ -5,26 +5,21 @@
 />
 {% endblock %} {% block content %}
 
-<section class="page-header">
-  <h1>Cards List</h1>  
-</section>
+<div class="container">
+  <h1 class="text-center text-warning">Cards List</h1> 
 
-<section class="card-container">
-  {% for card in cards %}
-  <div class="card">
-    <div class="card-content">
-      <div class="card-img-container">
-        <img
-          src="{% static 'images/text.svg' %}"
-          alt="Alt"
-        />
+  <div class="row">    
+    {% for card in resultcards %}
+    <div class="card" style="width: 18rem;">
+      <img src="{% static 'images/card_image.jpg' %}" class="card-img-top" alt="Multi language image">
+      <div class="card-body">        
+        <h2 class="card-title">{{ card.title }}</h2>
+        <p class="card-text">{{card.result}}</p>            
+        <p class="card-text">{{card.note}}</p>
       </div>
-      <h2 class="card-title">{{ card.title }}</h2>
-      <p>{{card.input_language}}:{{card.textinput}}</p>            
-      <p>{{card.output_language}}: {{card.result }}</p>
     </div>
+    {% endfor %}
   </div>
-  {% endfor %}
-</section>
+</div>
 
 {% endblock %}
