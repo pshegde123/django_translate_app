@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth.models import User
 
 LANGUAGES = (
     ('auto', 'auto detect'),
@@ -124,6 +125,7 @@ class Card(models.Model):
         choices = LANGUAGES, 
         default = 'en')    
     result = models.TextField(max_length=250)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, default=1)
 
     def __str__(self):
         return self.title

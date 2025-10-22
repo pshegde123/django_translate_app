@@ -21,9 +21,21 @@
       </div>
       <nav>
         <ul>
-          <li><a href="/cards">All Cards</a></li>
-          <li><a href="/cards/create">Add New Card</a></li>
-          <li><a href="/about">About</a></li>
+          {% if user.is_authenticated %}
+            <li><a href="{% url 'cards' %}">All Cards</a></li>
+            <li><a href="{% url 'card-create' %}">Add New Card</a></li>
+            <li><a href="{% url 'about' %}">About</a></li>          
+            <li>
+              <form id="logout-form" method="post" action="{% url 'logout' %}">
+                {% csrf_token %}
+                <button type="submitLogout">Log out</button>
+              </form>
+            </li>
+          {% else %}
+            <li><a href="{% url 'about' %}">About</a></li>
+            <li><a href="{% url 'home' %}">Login</a></li>
+            <li><a href="{% url 'signup' %}">Sign Up</a></li>
+          {% endif %}
         </ul>
       </nav>
     </header>

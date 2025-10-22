@@ -1,9 +1,12 @@
 from django.urls import path
 from . import views # Import views to connect routes to view functions
+from django.contrib.auth import logout
 
 urlpatterns = [
     # Routes will be added here
-    path('', views.home, name='home'),
+    path('', views.Home.as_view(), name='home'),
+    path('accounts/signup/', views.signup, name='signup'),
+    path('logout', views.logout, name='logout'),
     path('about/', views.about, name='about'),
     path('cards/', views.cards_index, name='cards'),
     path('cards/create/', views.add_new_card, name="card-create"),
