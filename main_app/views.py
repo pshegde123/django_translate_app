@@ -10,6 +10,7 @@ from django.contrib.auth.views import LoginView
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.views import LogoutView
 from django.contrib.auth import login
+from asgiref.sync import sync_to_async
 
 def logout(request):
     if request.method=="POST":
@@ -53,22 +54,13 @@ def show_languages():
         print(language," " * (8 - len(language)),LANGUAGES[language])
 
 @login_required
-async def add_new_card(request):
+def add_new_card(request):
     #Access form
     cardform = CardForm()    
-    result_form = ResultCardForm()
-    #Test data  
-    # short_lang = []
-    # full_lang = []
-    # for language in LANGUAGES:
-    #     short_lang.append(language)
-    #     full_lang.append(LANGUAGES[language].capitalize())        
-    # zipped_data = zip(short_lang, full_lang)
-    #return  render(request, 'cards/newcard.html',{'translated':translated, 'zipped_data':zipped_data})    
+    result_form = ResultCardForm()   
     return  render(request, 'cards/newcard.html',{'cardform':cardform, 'resultform':result_form})
 
-@login_required    
-async def create_conversion(request):
+def get_translation(request):
     if(request.method == "POST"):
         form = CardForm(request.POST)       
         result_form = ResultCardForm(request.POST)          
@@ -79,31 +71,71 @@ async def create_conversion(request):
             translator = Translator()
             if(input_language == 'auto'):
                 if(output_language == 'en'):
-                    translated = await translator.translate(text= textinput)                       
+                    translated =  translator.translate(text= textinput)                       
                 else:
-                    translated = await translator.translate(text= textinput, dest=output_language)   
+                    translated =  translator.translate(text= textinput, dest=output_language)   
             else:
-                translated = await translator.translate(text= textinput,src=input_language,dest=output_language)   
-                       
-            translated_text = translated.text                
-            result_form = ResultCardForm(
-                initial={
+                translated =  translator.translate(text= textinput,src=input_language,dest=output_language)   
+            
+            try:
+                translate_result = asyncio.run(translated)
+                translated_text = translate_result.text         
+            except Exception as e:
+                print(f"Error = {e}")
+                return { "form_valid":False}
+
+            return {                
                     'result':translated_text,
-                    'title':input_language+" -> "+output_language
-                }
-            )            
-    return render(request,'cards/newcard.html',{'cardform':form,'resultform':result_form})
+                    'title':input_language+" -> "+output_language,
+                    'form_valid': True               
+            }
+        return {"form_valid":False}
+
+@login_required    
+async def create_conversion(request):
+    data = await sync_to_async(get_translation,thread_sensitive=True)(request)
+    
+    def check_auth_status(user):
+        return user.is_authenticated
+    
+    is_user_authenticated = await sync_to_async(check_auth_status)(request.user)
+    print(is_user_authenticated)
+    context = {}
+    if data and data["form_valid"]:
+        translated_text = data["result"]
+        print("translated_text = {translated_text}")
+        title = data["title"]
+        result_form = ResultCardForm(
+            initial = {
+                'result':translated_text,
+                'title':title
+            }
+        )        
+        form = CardForm(request.POST)
+        context = {
+            'cardform':form,
+            'resultform':result_form,
+            'user_is_authenticated':is_user_authenticated
+        }    
+    else:
+        form = CardForm(request.POST or None)
+        result_form = ResultCardForm()
+        context = {
+            'cardform':form,
+            'resultform':result_form,
+            'user_is_authenticated':is_user_authenticated            
+        }
+    context['user_is_authenticated'] = is_user_authenticated
+    print(context)
+    return render(request,'cards/newcard.html',context)
 
 @login_required
 def save_translation(request):    
     if(request.method == "POST"):
         result_form = ResultCardForm(request.POST)            
-        if result_form.is_valid():     
-            title =  result_form.cleaned_data['title']
+        if result_form.is_valid():      
             result = result_form.cleaned_data['result']
             note = result_form.cleaned_data['note']            
-            #print(title,result,note)
-            new_card = result_form.save(commit=False)            
-            new_card.save()        
-    cards = ResultCard.objects.filter()               
-    return render(request, 'cards/index.html',{'cards':cards})
+            print(title,result,note)
+                   
+    return render(request, 'about.html')
