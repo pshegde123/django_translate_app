@@ -84,23 +84,26 @@ async def create_conversion(request):
                     translated = await translator.translate(text= textinput, dest=output_language)   
             else:
                 translated = await translator.translate(text= textinput,src=input_language,dest=output_language)   
+                       
             translated_text = translated.text                
             result_form = ResultCardForm(
                 initial={
                     'result':translated_text,
                     'title':input_language+" -> "+output_language
                 }
-            )
-            
+            )            
     return render(request,'cards/newcard.html',{'cardform':form,'resultform':result_form})
 
 @login_required
 def save_translation(request):    
     if(request.method == "POST"):
         result_form = ResultCardForm(request.POST)            
-        if result_form.is_valid():      
+        if result_form.is_valid():     
+            title =  result_form.cleaned_data['title']
             result = result_form.cleaned_data['result']
             note = result_form.cleaned_data['note']            
-            print(title,result,note)
-                   
-    return render(request, 'about.html')
+            #print(title,result,note)
+            new_card = result_form.save(commit=False)            
+            new_card.save()        
+    cards = ResultCard.objects.filter()               
+    return render(request, 'cards/index.html',{'cards':cards})

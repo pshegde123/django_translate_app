@@ -20,8 +20,9 @@
         </a>
       </div>
       <nav>
-        <ul>
-          {% if user.is_authenticated %}
+        <ul>          
+        
+            <li><a href="{% url 'home' %}">Home</a></li>
             <li><a href="{% url 'cards' %}">All Cards</a></li>
             <li><a href="{% url 'card-create' %}">Add New Card</a></li>
             <li><a href="{% url 'about' %}">About</a></li>          
@@ -31,11 +32,11 @@
                 <button type="submitLogout">Log out</button>
               </form>
             </li>
-          {% else %}
+         
             <li><a href="{% url 'about' %}">About</a></li>
             <li><a href="{% url 'home' %}">Login</a></li>
             <li><a href="{% url 'signup' %}">Sign Up</a></li>
-          {% endif %}
+          
         </ul>
       </nav>
     </header>
