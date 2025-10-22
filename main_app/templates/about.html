@@ -1,8 +1,21 @@
 {% extends 'base.html' %} 
+{% load static %} 
 {% block content %}
-<h1>About The Translation Card Collector</h1>
-<hr />
-<p class="page-content">
-  Save your favorite texts!
-</p>
+<div class="container">
+  <h2 class="text-center text-warning">About</h2>
+ 
+  <div class="page-content">
+    <div class="row">
+      <div class="col">
+        <img src="{% static 'images/illustration.jpg' %}"
+              width="450px;"
+              height="450px;"
+              alt="The muli language illustration"/>
+      </div>
+      <div class="col">
+          <h5>Translate your favorite texts and save them to revisit later!</h5>
+      </div>
+    </div>    
+  </div>
+</div>
 {% endblock %}

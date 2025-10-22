@@ -1,22 +1,32 @@
-{% extends 'base.html' %} {% load static %} {% block head %}
-<link
-  rel="stylesheet"
-  href="{% static 'css/home.css' %}"
-/>
-{% endblock %} {% block content %}
+{% extends 'base.html' %} {% load static %} 
+{% block content %}
 
-<section class="logo-container">
-    <h1>Welcome to translation card collector</h1>
-</section>
-{% if not user.is_authenticated %}
-  <section>
-    <form action="{% url 'home' %}" method="post" class="login">
-      <h1>Login</h1>
-      {% csrf_token %} {{ form.as_p }}
-      <input type="hidden" name="next" value="{{ next }}" />
-      <button type="submit" class="btn submit">Login</button>
-    </form>
-  </section>
-{% endif %}
-
+<div class="container">
+  <div class="row">
+     <h1 class="text-center text-warning">Welcome To Translation Card Collector</h1>
+    <div class="col-6">
+      <img
+              src="{% static 'images/background.jpg' %}"
+              width="650px;"
+              height="650px;"
+              alt="The muli language hello image"
+            />
+    </div>
+    <div class="col-6 mt-2 p-5" id="login-section">
+        {% if not user.is_authenticated %}          
+              <form action="{% url 'home' %}" method="post" class="login">
+                <h1>Login</h1>
+                {% csrf_token %} {{ form.as_p }}
+                <input type="hidden" name="next" value="{{ next }}" />
+                <button type="submit" class="btn btn-primary">Login</button>
+              </form>
+        {% else %}
+              <div class="div">
+                <p>Visit 'All Cards' to check exiting tranlated text cards.</p>
+                <p>Visit 'Add New Card' to create a new card.</p>
+              </div>        
+        {% endif %}
+    </div>
+  </div>
+</div> 
 {% endblock %}
