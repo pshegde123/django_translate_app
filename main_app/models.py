@@ -1,4 +1,5 @@
 from django.db import models
+from django.urls import reverse
 from django.contrib.auth.models import User
 
 LANGUAGES = (
@@ -137,3 +138,7 @@ class ResultCard(models.Model):
     
     def __str__(self):
         return self.title
+
+    # Define a method to get the URL for this particular cat instance
+    def get_absolute_url(self):        
+        return reverse('card-detail', kwargs={'card_id': self.id})

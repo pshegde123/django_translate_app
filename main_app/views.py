@@ -139,3 +139,16 @@ def save_translation(request):
             print(title,result,note)
                    
     return render(request, 'about.html')
+
+@login_required
+def card_detail(request, resultcard_id):
+    card = ResultCard.objects.get(id=resultcard_id)        
+    return render(request, 'cards/details.html', {'card':card})
+
+@login_required
+def card_delete(request, resultcard_id):
+    obj_to_delete = ResultCard.objects.get(id=resultcard_id)
+    obj_to_delete.delete()
+    cardz = ResultCard.objects.all()    
+    return render(request, 'cards/index.html', {'resultcards': cardz})
+    
