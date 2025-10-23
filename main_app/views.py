@@ -142,8 +142,22 @@ def save_translation(request):
     return render(request, 'cards/index.html', {'resultcards': cardz})
 
 @login_required
+def saveupdate(request,resultcard_id):        
+    if(request.method == "POST"):
+        result_form = ResultCardForm(request.POST)            
+        if result_form.is_valid():    
+            title =  result_form.cleaned_data['title'] 
+            result = result_form.cleaned_data['result']
+            updated_note = result_form.cleaned_data['note']                     
+            obj_to_update = ResultCard.objects.get(id=resultcard_id)
+            obj_to_update.note = updated_note
+            obj_to_update.save()
+    cardz = ResultCard.objects.all()                    
+    return render(request, 'cards/index.html', {'resultcards': cardz})       
+
+@login_required
 def card_detail(request, resultcard_id):
-    card = ResultCard.objects.get(id=resultcard_id)        
+    card = ResultCard.objects.get(id=resultcard_id)            
     return render(request, 'cards/details.html', {'card':card})
 
 @login_required
@@ -155,13 +169,13 @@ def card_delete(request, resultcard_id):
     
 @login_required
 def card_update(request, resultcard_id):            
+    card = ResultCard.objects.get(id=resultcard_id)    
+    #print(f"card data = {card.note}")
     form_to_update = ResultCardForm(
          initial = {
-                'title':"test title",
-                'result':"test result",                
-                'note':"test note"
+                'title':card.title,
+                'result':card.result,                
+                'note':card.note
             }
     )              
-    card = ResultCard.objects.get(id=resultcard_id)    
-    print(f"card data = {card}")
-    return render(request, 'cards/newnote.html',{'resultform':form_to_update, 'card':card })
+    return render(request, 'cards/newnote.html',{'resultform':form_to_update, 'card':card ,'resultcard_id':resultcard_id})

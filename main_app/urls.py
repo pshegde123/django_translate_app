@@ -12,7 +12,8 @@ urlpatterns = [
     path('cards/create/', views.add_new_card, name="card-create"),
     path('create-conversion/', views.create_conversion, name="create-conversion"),
     path('save-translation/', views.save_translation, name="save-translation") , 
+    path('saveupdate/<int:resultcard_id>', views.saveupdate, name="saveupdate") , 
     path('cards/<int:resultcard_id>/', views.card_detail, name='card-detail'),
     path('cards/<int:resultcard_id>/delete/', views.card_delete, name='card-delete'),
-    path('cards/<int:resultcard_id>/update/', views.card_update, name='card-update'),
+    path('cards/<int:resultcard_id>/update/', views.card_update, name='card-update'),    
 ]

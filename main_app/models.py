@@ -142,3 +142,19 @@ class ResultCard(models.Model):
     # Define a method to get the URL for this particular cat instance
     def get_absolute_url(self):        
         return reverse('card-detail', kwargs={'card_id': self.id})
+
+class TextNote(models.Model):
+    date = models.DateField('Date')
+    textnote = models.CharField(
+        max_length=100,        
+    )
+    
+    # Create a cat_id column for each feeding in the database
+    resultcard = models.ForeignKey(ResultCard, on_delete=models.CASCADE)
+
+    def __str__(self):
+        # Nice method for obtaining the friendly value of a Field.choice
+        return f"{self.get_textnote_display()} on {self.date}"
+    
+    class Meta:
+        ordering = ['-date']  # This line makes the newest feedings appear first
