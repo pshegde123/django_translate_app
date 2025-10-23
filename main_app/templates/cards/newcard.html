@@ -12,7 +12,7 @@
           class="form-content" 
           autocomplete="off">
           {% csrf_token %}                  
-          {{ cardform }}
+          {{ cardform.as_p }}
           <button type="submit" class="btn submit btn-primary">Translate</button>
       </form>
     </div>
@@ -23,7 +23,7 @@
           class="form-content" 
           autocomplete="off">
           {% csrf_token %}          
-          {{resultform }}                
+          {{resultform.as_p }}                
         <button type="submit" class="btn submit btn-primary">Save Card</button>
       </form>
     </div>

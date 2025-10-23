@@ -99,7 +99,7 @@ async def create_conversion(request):
         return user.is_authenticated
     
     is_user_authenticated = await sync_to_async(check_auth_status)(request.user)
-    print(is_user_authenticated)
+   
     context = {}
     if data and data["form_valid"]:
         translated_text = data["result"]
@@ -155,9 +155,13 @@ def card_delete(request, resultcard_id):
     
 @login_required
 def card_update(request, resultcard_id):            
-    result_form = ResultCard.objects.get(id=resultcard_id)        
-    print(resultcard_id)
-    # result_form.title = obj_to_update['title']
-    # result_form.result = obj_to_update['result']
-    # result_form.note = obj_to_update['note']
-    return render(request, 'cards/newnote.html', {'resultform':result_form})
+    form_to_update = ResultCardForm(
+         initial = {
+                'title':"test title",
+                'result':"test result",                
+                'note':"test note"
+            }
+    )              
+    card = ResultCard.objects.get(id=resultcard_id)    
+    print(f"card data = {card}")
+    return render(request, 'cards/newnote.html',{'resultform':form_to_update, 'card':card })

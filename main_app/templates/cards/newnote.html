@@ -7,12 +7,12 @@
 </div>
 <div class="container">            
       <form  
-          action="{% url 'save-translation' %}"
+          action="{% url 'card-update' card.id %}"
           method="post" 
           class="subsection-content" 
           autocomplete="off">
           {% csrf_token %}          
-          {{resultform.as_p}}                
+          {{ resultform.as_p }}                
         <button type="submit" class="btn btn-primary">Save</button>
       </form>    
 </div>
