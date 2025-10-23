@@ -133,12 +133,13 @@ async def create_conversion(request):
 def save_translation(request):    
     if(request.method == "POST"):
         result_form = ResultCardForm(request.POST)            
-        if result_form.is_valid():      
+        if result_form.is_valid():    
+            title =  result_form.cleaned_data['title'] 
             result = result_form.cleaned_data['result']
             note = result_form.cleaned_data['note']            
-            print(title,result,note)
-                   
-    return render(request, 'about.html')
+            result_form.save()   
+    cardz = ResultCard.objects.all()                    
+    return render(request, 'cards/index.html', {'resultcards': cardz})
 
 @login_required
 def card_detail(request, resultcard_id):
@@ -152,3 +153,11 @@ def card_delete(request, resultcard_id):
     cardz = ResultCard.objects.all()    
     return render(request, 'cards/index.html', {'resultcards': cardz})
     
+@login_required
+def card_update(request, resultcard_id):            
+    result_form = ResultCard.objects.get(id=resultcard_id)        
+    print(resultcard_id)
+    # result_form.title = obj_to_update['title']
+    # result_form.result = obj_to_update['result']
+    # result_form.note = obj_to_update['note']
+    return render(request, 'cards/newnote.html', {'resultform':result_form})

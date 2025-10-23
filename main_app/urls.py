@@ -14,4 +14,5 @@ urlpatterns = [
     path('save-translation/', views.save_translation, name="save-translation") , 
     path('cards/<int:resultcard_id>/', views.card_detail, name='card-detail'),
     path('cards/<int:resultcard_id>/delete/', views.card_delete, name='card-delete'),
+    path('cards/<int:resultcard_id>/update/', views.card_update, name='card-update'),
 ]

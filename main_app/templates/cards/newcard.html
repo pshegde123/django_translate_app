@@ -1,15 +1,11 @@
 {% extends 'base.html' %} {% load static %} {% block head %}
-<link
-  rel="stylesheet"
-  href="{% static 'css/cards/newcard.css' %}"
-/>
+
 {% endblock %} {% block content %}
 
-<div class="page-header">
-  <h1 class="header">Add New Card</h1>  
-</div>
-  <div class="container">    
-    <section id="input-section">
+<div class="container">    
+    <h1 class="text-center text-warning">Add New Card</h1>  
+    <div class="row">
+    <div class="col-6">
         <form 
           action="{% url 'create-conversion' %}"
           method="post" 
@@ -17,10 +13,10 @@
           autocomplete="off">
           {% csrf_token %}                  
           {{ cardform.as_p }}
-          <button type="submit" class="btn submit">Submit</button>
+          <button type="submit" class="btn submit btn-primary">Submit</button>
       </form>
-    </section>
-    <section id="result-section">
+    </div>
+    <div class="col-6">
       <form  
           action="{% url 'save-translation' %}"
           method="post" 
@@ -28,10 +24,11 @@
           autocomplete="off">
           {% csrf_token %}          
           {{resultform.as_p}}                
-        <button type="submit" class="btn submit">Save Card</button>
+        <button type="submit" class="btn submit btn-primary">Save Card</button>
       </form>
-    </section>
-  </div>
+    </div>
+    </div>
+</div>
 
 
 {% endblock %}
