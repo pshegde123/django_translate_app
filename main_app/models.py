@@ -135,6 +135,7 @@ class ResultCard(models.Model):
     title = models.CharField(max_length=20,default="ES->EN")      
     result = models.TextField(max_length=250)
     note = models.TextField(max_length=250, default="")
+    user = models.ForeignKey(User, on_delete=models.CASCADE, default=1)
     
     def __str__(self):
         return self.title

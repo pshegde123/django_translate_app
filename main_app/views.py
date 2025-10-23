@@ -45,7 +45,7 @@ def about(request):
 @login_required
 def cards_index(request):
     # Render the cats/index.html template with the cats data
-    cardz = ResultCard.objects.all()
+    cardz = ResultCard.objects.filter(user=request.user)
     #print(cardz)    
     return render(request, 'cards/index.html', {'resultcards': cardz})
 
@@ -126,7 +126,7 @@ async def create_conversion(request):
             'user_is_authenticated':is_user_authenticated            
         }
     context['user_is_authenticated'] = is_user_authenticated
-    print(context)
+    #print(context)
     return render(request,'cards/newcard.html',context)
 
 @login_required
@@ -136,9 +136,10 @@ def save_translation(request):
         if result_form.is_valid():    
             title =  result_form.cleaned_data['title'] 
             result = result_form.cleaned_data['result']
-            note = result_form.cleaned_data['note']            
+            note = result_form.cleaned_data['note']    
+            result_form.instance.user = request.user        
             result_form.save()   
-    cardz = ResultCard.objects.all()                    
+    cardz = ResultCard.objects.filter(user=request.user)                    
     return render(request, 'cards/index.html', {'resultcards': cardz})
 
 @login_required
@@ -152,7 +153,7 @@ def saveupdate(request,resultcard_id):
             obj_to_update = ResultCard.objects.get(id=resultcard_id)
             obj_to_update.note = updated_note
             obj_to_update.save()
-    cardz = ResultCard.objects.all()                    
+    cardz = ResultCard.objects.filter(user=request.user)                  
     return render(request, 'cards/index.html', {'resultcards': cardz})       
 
 @login_required
@@ -164,7 +165,7 @@ def card_detail(request, resultcard_id):
 def card_delete(request, resultcard_id):
     obj_to_delete = ResultCard.objects.get(id=resultcard_id)
     obj_to_delete.delete()
-    cardz = ResultCard.objects.all()    
+    cardz = ResultCard.objects.filter(user=request.user)    
     return render(request, 'cards/index.html', {'resultcards': cardz})
     
 @login_required

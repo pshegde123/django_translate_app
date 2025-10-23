@@ -8,22 +8,26 @@
 <div class="container">
   <h1 class="text-center text-warning">Cards List</h1> 
 
-  <div class="row">    
-    {% for card in resultcards %}
-    <div class="col-4">
-      <div class="card" style="width: 18rem;">
-        <a href="{% url 'card-detail' card.id %}">
-        <img src="{% static 'images/card_image.jpg' %}" class="card-img-top" alt="Multi language image">
-        <div class="card-body">        
-          <h2 class="card-title">{{ card.title }}</h2>
-          <p class="card-text">{{card.result}}</p>            
-          <p class="card-text">{{card.note}}</p>
+  {% if resultcards.all.count %}
+    <div class="row">    
+      {% for card in resultcards %}
+      <div class="col-4">
+        <div class="card" style="width: 18rem;">
+          <a href="{% url 'card-detail' card.id %}">
+          <img src="{% static 'images/card_image.jpg' %}" class="card-img-top" alt="Multi language image">
+          <div class="card-body">        
+            <h2 class="card-title">{{ card.title }}</h2>
+            <p class="card-text">{{card.result}}</p>            
+            <p class="card-text">{{card.note}}</p>
+          </div>
+          </a>
         </div>
-        </a>
-      </div>
-    </div>    
-    {% endfor %}
-  </div>
+      </div>    
+      {% endfor %}
+    </div>
+    {% else %}
+      <h5>Add a new card</h5>
+    {% endif %}
 </div>
 
 {% endblock %}
