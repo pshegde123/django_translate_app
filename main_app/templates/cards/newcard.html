@@ -9,21 +9,21 @@
         <form 
           action="{% url 'create-conversion' %}"
           method="post" 
-          class="subsection-content" 
+          class="form-content" 
           autocomplete="off">
           {% csrf_token %}                  
-          {{ cardform.as_p }}
-          <button type="submit" class="btn submit btn-primary">Submit</button>
+          {{ cardform }}
+          <button type="submit" class="btn submit btn-primary">Translate</button>
       </form>
     </div>
     <div class="col-6">
       <form  
           action="{% url 'save-translation' %}"
           method="post" 
-          class="subsection-content" 
+          class="form-content" 
           autocomplete="off">
           {% csrf_token %}          
-          {{resultform.as_p}}                
+          {{resultform }}                
         <button type="submit" class="btn submit btn-primary">Save Card</button>
       </form>
     </div>
